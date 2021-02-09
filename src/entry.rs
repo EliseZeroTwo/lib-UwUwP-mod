@@ -28,3 +28,14 @@ impl From<DllReason> for u32 {
         }
     }
 }
+
+#[macro_export]
+macro_rules! dll_main {
+    ($($arms:tt)*) => {
+        #[no_mangle]
+        pub unsafe extern "C" fn DllMain(_module: *mut c_void, rfc: u32, _lp_res: *mut c_void) -> bool {
+            let reason = DllReason::from(rfc);
+            match reason $($arms)*
+        }
+    };
+}
