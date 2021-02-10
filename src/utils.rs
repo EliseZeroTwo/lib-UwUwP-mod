@@ -1,6 +1,6 @@
 use std::{ffi::CString, string::FromUtf16Error};
 
-use crate::bindings::windows::win32::system_services;
+use crate::bindings::windows::win32::{system_services, windows_and_messaging};
 
 pub fn pcwstr_to_string(pwstr: &mut *const u16) -> Result<String, FromUtf16Error> {
     let mut out_vec = Vec::<u16>::new();
@@ -38,5 +38,13 @@ pub fn get_module_symbol_address(module: &str, symbol: &str) -> Option<usize> {
             Some(n) => Some(std::mem::transmute(n)),
             None => None,
         }
+    }
+}
+
+pub fn alert(message: &String) {
+    unsafe {
+        let title_wchar = string_to_wchar_vec(&"UwUwP".to_string());
+        let message_wchar = string_to_wchar_vec(message);
+        windows_and_messaging::MessageBoxW(std::mem::zeroed(), message_wchar.as_ptr(), title_wchar.as_ptr(), 0);
     }
 }
