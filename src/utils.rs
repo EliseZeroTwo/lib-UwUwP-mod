@@ -41,7 +41,7 @@ pub fn get_module_symbol_address(module: &str, symbol: &str) -> Option<usize> {
     }
 }
 
-pub fn alert(message: &String) {
+pub fn message_box(message: &String) {
     unsafe {
         let title_wchar = string_to_wchar_vec(&"UwUwP".to_string());
         let message_wchar = string_to_wchar_vec(message);
